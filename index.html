@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>H-BTI 남편 육아 기질 테스트</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/moonspam/NanumSquare@2.0/nanumsquare.css">
+<style>
+  :root{
+    --bg:#FAF6EF;
+    --bg-soft:#F2EAE0;
+    --surface:#FFFFFF;
+    --surface-2:#F3ECE1;
+    --line: rgba(29,49,37,0.10);
+    --text:#1D3125;
+    --text-dim:#48584A;
+    --text-dimmer:#758071;
+    --accent:#1D3125;
+    --accent-2:#3F5C48;
+    --sage:#A5B5A1;
+    --sand:#D2C3B3;
+    --d:#2F4A38;
+    --a:#B5651D;
+    --r:#B4914B;
+    --f:#7C93A8;
+    --x:#8B8398;
+    --m:#5E8149;
+    --p:#8A5A3B;
+    --radius:20px;
+    --radius-sm:12px;
+    --shadow: 0 1px 2px rgba(29,49,37,0.05), 0 10px 24px -14px rgba(29,49,37,0.18);
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
+  body{
+    background:
+      radial-gradient(1100px 700px at 15% -10%, #EDF1E6 0%, transparent 60%),
+      radial-gradient(900px 600px at 110% 10%, #F3E7D8 0%, transparent 55%),
+      var(--bg);
+    color:var(--text);
+    font-family:'Dotum', 'DotumChe', 'Noto Sans KR', -apple-system, sans-serif;
+    font-weight:500;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+  }
+  p, span, label, li, td, div{ font-weight:inherit; }
+  .app{
+    width:100%;
+    max-width:480px;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    position:relative;
+  }
+  .display{ font-family:'NanumSquare', 'Noto Sans KR', sans-serif; font-weight:800; letter-spacing:0.01em; }
+  /* ---------- top bar ---------- */
+  .topbar{
+    padding:18px 22px 10px;
+    display:flex; align-items:center; gap:10px;
+  }
+  .badge-dot{
+    width:8px;height:8px;border-radius:50%;
+    background:var(--accent);
+    box-shadow:0 0 0 4px rgba(29,49,37,0.10);
+    flex:none;
+  }
+  .topbar span{ font-size:12px; color:var(--text-dim); letter-spacing:0.14em; text-transform:uppercase; }
+  .share-btn{
+    margin-left:auto; display:flex; align-items:center; gap:6px;
+    background:var(--surface-2); border:1px solid var(--line); color:var(--text);
+    font-family:inherit; font-size:12.5px; font-weight:700;
+    padding:9px 14px; border-radius:100px; cursor:pointer; white-space:nowrap;
+    transition:transform .12s ease, border-color .12s ease;
+  }
+  .share-btn:hover{ border-color:var(--accent); }
+  .share-btn:active{ transform:scale(0.96); }
+  .share-btn:focus-visible{ outline:2px solid #fff; outline-offset:2px; }
+  main{ flex:1; display:flex; flex-direction:column; padding:6px 22px 40px; }
+  /* ---------- intro ---------- */
+  .intro-hero{
+    text-align:center;
+    padding:28px 6px 10px;
+  }
+  .intro-hero .eyebrow{
+    display:inline-block;
+    font-size:12px;
+    color:var(--accent);
+    letter-spacing:0.18em;
+    border:1px solid rgba(29,49,37,0.25);
+    background:rgba(165,181,161,0.18);
+    padding:5px 12px;
+    border-radius:100px;
+    margin-bottom:18px;
+  }
+  .intro-hero h1{
+    font-family:'NanumSquare','Noto Sans KR',sans-serif;
+    font-weight:800;
+    font-size:31px; line-height:1.5; letter-spacing:0.02em; margin:0 0 14px;
+    background:linear-gradient(135deg,#1D3125, #4A6B4E 55%, #8C9E85);
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  .intro-hero p{ color:var(--text-dim); font-size:15px; line-height:1.65; margin:0 auto; max-width:340px; }
+  .type-strip{
+    display:flex; justify-content:center; gap:10px; margin:26px 0 8px; flex-wrap:wrap;
+  }
+  .type-chip{
+    width:46px;height:46px;border-radius:14px;
+    display:flex;align-items:center;justify-content:center;
+    font-size:20px;
+    background:var(--surface);
+    border:1px solid var(--line);
+    box-shadow:var(--shadow);
+  }
+  .field{ margin-top:22px; }
+  .field label{ display:block; font-size:13px; color:var(--text-dim); margin-bottom:8px; font-weight:500; }
+  .field input{
+    width:100%; padding:15px 16px; border-radius:var(--radius-sm);
+    border:1px solid var(--line); background:var(--surface);
+    color:var(--text); font-size:16px; font-family:inherit;
+    outline:none; transition:border-color .15s;
+  }
+  .field input:focus{ border-color:var(--accent); }
+  .field input::placeholder{ color:var(--text-dimmer); }
+  .hint{ font-size:12px; color:var(--text-dimmer); margin-top:8px; line-height:1.5; }
+  .btn{
+    appearance:none; border:none; cursor:pointer;
+    font-family:inherit; font-weight:700; font-size:16px;
+    border-radius:100px; padding:17px 20px;
+    display:flex; align-items:center; justify-content:center; gap:8px;
+    width:100%; transition:transform .12s ease, box-shadow .12s ease, opacity .12s;
+  }
+  .btn:active{ transform:scale(0.98); }
+  .btn:focus-visible{ outline:2px solid #fff; outline-offset:3px; }
+  .btn-primary{
+    background:linear-gradient(135deg, var(--accent), var(--accent-2));
+    color:#fff;
+    box-shadow:0 10px 24px -8px rgba(29,49,37,0.45);
+  }
+  .btn-primary:disabled{ opacity:0.35; box-shadow:none; cursor:not-allowed; }
+  .btn-ghost{
+    background:transparent; color:var(--text-dim); border:1px solid var(--line);
+  }
+  .btn-block{ margin-top:26px; }
+  /* ---------- quiz ---------- */
+  .progress-wrap{ margin:16px 0 6px; }
+  .progress-row{ display:flex; justify-content:space-between; align-items:baseline; margin-bottom:10px; }
+  .progress-row .q-count{ font-size:12px; color:var(--text-dim); letter-spacing:0.06em; }
+  .progress-row .q-count b{ color:var(--text); font-size:14px; }
+  .progress-track{
+    height:6px; border-radius:100px; background:var(--surface); overflow:hidden;
+  }
+  .progress-fill{
+    height:100%; border-radius:100px;
+    background:linear-gradient(90deg, var(--accent), var(--sage));
+    transition:width .35s ease;
+  }
+  .radar-mini{ display:flex; justify-content:center; margin:18px 0 4px; }
+  .q-card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:30px 24px 26px;
+    margin-top:18px;
+    min-height:150px;
+    display:flex; align-items:center;
+    box-shadow:var(--shadow);
+  }
+  .q-card p{ font-size:17px; line-height:1.6; margin:0; font-weight:500; }
+  .scale{ margin-top:22px; }
+  .scale-labels{ display:flex; justify-content:space-between; font-size:11px; color:var(--text-dimmer); padding:0 2px 10px; }
+  .scale-btns{ display:flex; gap:8px; }
+  .scale-btn{
+    flex:1; aspect-ratio:1/1; border-radius:14px;
+    border:1px solid var(--line); background:var(--surface);
+    color:var(--text-dim); font-family:inherit; font-weight:700; font-size:15px;
+    cursor:pointer; transition:all .12s ease;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .scale-btn:hover{ border-color:var(--accent); }
+  .scale-btn:active{ transform:scale(0.92); }
+  .scale-btn:focus-visible{ outline:2px solid #fff; outline-offset:2px; }
+  .scale-btn.selected{
+    background:var(--accent); border-color:var(--accent); color:#fff;
+    box-shadow:0 6px 16px -6px rgba(29,49,37,0.5);
+  }
+  .quiz-nav{ display:flex; justify-content:space-between; margin-top:24px; }
+  .link-btn{
+    background:none;border:none;color:var(--text-dimmer);font-family:inherit;
+    font-size:13px; cursor:pointer; padding:8px;
+  }
+  .link-btn:hover{ color:var(--text-dim); }
+  /* ---------- gate ---------- */
+  .gate-card{
+    background:var(--surface); border:1px solid var(--line); border-radius:var(--radius);
+    padding:28px 22px; margin-top:20px;
+    box-shadow:var(--shadow);
+  }
+  .gate-card h2{ font-size:20px; margin:0 0 8px; }
+  .gate-card > p{ font-size:14px; color:var(--text-dim); line-height:1.6; margin:0 0 4px; }
+  .trust-row{
+    display:flex; align-items:center; gap:10px; margin-top:16px; padding:12px 14px;
+    background:rgba(165,181,161,0.16); border-radius:12px;
+    font-size:12px; color:var(--text-dim); line-height:1.5;
+  }
+  .trust-row .trust-icon{
+    flex:none; width:28px; height:28px; border-radius:50%;
+    background:var(--sage); color:#fff; display:flex; align-items:center; justify-content:center;
+    font-size:14px;
+  }
+  .checkline{
+    display:flex; gap:10px; align-items:flex-start; margin-top:12px; padding:13px 14px;
+    border-radius:12px;
+    font-size:12px; color:var(--text-dimmer); line-height:1.6;
+  }
+  .checkline.required{ background:rgba(181,101,29,0.07); }
+  .checkline.optional{ background:rgba(94,129,73,0.08); }
+  .checkline input{ margin-top:2px; flex:none; width:17px; height:17px; accent-color:var(--accent); }
+  .checkline .req-tag{ color:var(--a); font-weight:700; margin-right:2px; }
+  .checkline .opt-tag{ color:var(--m); font-weight:700; margin-right:2px; }
+  .policy-toggle{
+    background:none; border:none; color:var(--text-dimmer); font-size:11px; text-decoration:underline;
+    cursor:pointer; padding:0; margin-top:10px; margin-left:2px; font-family:inherit;
+  }
+  .policy-box{
+    display:none; margin-top:10px; padding:14px 14px; background:var(--bg-soft); border-radius:10px;
+    font-size:11.5px; color:var(--text-dimmer); line-height:1.7;
+  }
+  .policy-box.open{ display:block; }
+  .policy-box table{ width:100%; border-collapse:collapse; margin-top:6px; }
+  .policy-box td{ padding:4px 0; vertical-align:top; }
+  .policy-box td:first-child{ width:76px; color:var(--text-dim); font-weight:700; }
+  /* ---------- result ---------- */
+  .result-hero{ text-align:center; padding:20px 0 6px;
+    background: radial-gradient(180px 140px at 50% 10%, rgba(165,181,161,0.35), transparent 70%);
+  }
+  .result-emoji{ font-size:56px; line-height:1; margin-bottom:10px; display:flex; justify-content:center; }
+  .result-eyebrow{ font-size:13px; color:var(--text-dim); margin-bottom:6px; }
+  .result-name{ font-size:28px; line-height:1.3; margin:0 0 12px; }
+  .result-tagline{ font-size:14px; color:var(--text-dim); max-width:340px; margin:0 auto; line-height:1.6; }
+  .radar-big{ display:flex; justify-content:center; margin:22px 0 6px; }
+  .section-card{
+    background:var(--surface); border:1px solid var(--line); border-radius:var(--radius);
+    padding:22px; margin-top:16px;
+    box-shadow:var(--shadow);
+  }
+  .section-card .label{
+    font-size:12px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase;
+    margin-bottom:10px; display:flex; align-items:center; gap:6px;
+  }
+  .section-card p{ font-size:14.5px; line-height:1.7; margin:0; color:var(--text); }
+  .stat-line{
+    display:flex; align-items:center; gap:14px; margin-top:16px; padding:16px 18px;
+    background:linear-gradient(135deg, rgba(210,195,179,0.45), rgba(165,181,161,0.28));
+    border:1px solid var(--line);
+    border-radius:var(--radius-sm);
+  }
+  .stat-line .num{ font-size:26px; font-weight:800; font-family:'NanumSquare','Noto Sans KR',sans-serif; color:var(--accent); flex:none; }
+  .stat-line .txt{ font-size:13px; color:var(--text-dim); line-height:1.5; }
+  .cta-block{
+    margin-top:28px; text-align:center; padding:30px 24px;
+    border-radius:var(--radius);
+    background:linear-gradient(160deg, #1D3125, #2C4436 65%, #3B5442);
+    border:1px solid rgba(165,181,161,0.3);
+    box-shadow:0 16px 32px -16px rgba(29,49,37,0.5);
+  }
+  .cta-block .cta-chip{
+    display:inline-block; font-size:11.5px; font-weight:700; letter-spacing:0.04em;
+    color:#EFE9D9; background:rgba(210,195,179,0.18); border:1px solid rgba(210,195,179,0.35);
+    padding:5px 12px; border-radius:100px; margin-bottom:14px;
+  }
+  .cta-block h3{ font-size:19px; margin:0 0 10px; color:#FFFFFF; }
+  .cta-block p{ font-size:13.5px; color:rgba(244,241,235,0.78); line-height:1.65; margin:0 0 22px; }
+  .cta-block .btn-primary{
+    background:linear-gradient(135deg, var(--sage), #C7D4C2);
+    color:var(--accent);
+    box-shadow:0 10px 24px -10px rgba(0,0,0,0.4);
+  }
+  .retry-row{ text-align:center; margin-top:22px; }
+  footer{ text-align:center; padding:20px 22px 30px; font-size:11px; color:var(--text-dimmer); }
+</style>
+</head>
+<body>
+<div class="app" id="app"></div>
+<script>
+/* ============ DATA ============ */
+const QUESTIONS = [
+  {n:1,axis:'D',text:'남편은 카톡이나 글로 자세히 요청하면 놓치는 것 하나 없이 확실하게 해낸다.'},
+  {n:2,axis:'D',text:'남편이 아이와 외출 준비 시에는 옷, 양말, 가방 위치를 매번 물어본다.'},
+  {n:3,axis:'D',text:'육아를 부탁할 때 "지금 당장 해"보다 "몇시까지 부탁해"라고 시간적 여유를 주면 덜 기분나빠한다.'},
+  {n:4,axis:'M',text:'본인이 담당할 구역을 고를 수 있게 선택지를 주면 더 적극적으로 움직인다.'},
+  {n:5,axis:'A',text:'아이와 놀아줄 때 본인의 방식대로 진행하는 것을 선호한다.'},
+  {n:6,axis:'D',text:'아이 물건을 살 때, 브랜드와 수량을 정확히 알려주면 실수 없이 딱 맞게 사 온다.'},
+  {n:7,axis:'A',text:'집안일의 디테일한 순서(예: 빨래 개는 법, 설거지 순서)를 본인 방식대로 존중해 주면 열심히 참여한다.'},
+  {n:8,axis:'M',text:'"여보, 설겆이랑 분리수거 중 하나만 골라" 식의 제안이 잘 통한다.'},
+  {n:9,axis:'A',text:'아이와 온몸으로 부딪치며 장난치고 놀아주는 시간은 잘 버틴다.'},
+  {n:10,axis:'A',text:'놀이터 등 야외 활동 시, 아이보다 본인이 더 신나서 에너지를 쏟을 때가 있다.'},
+  {n:11,axis:'A',text:'아이가 징징거리거나 떼를 쓰면, 차분한 말보다는 장난스러운 리액션으로 분위기를 유쾌하게 바꾸는 편이다.'},
+  {n:12,axis:'A',text:'아이 밥 먹이기, 기저귀 갈기, 목욕시키기처럼 정해진 시간표를 따르는 실무보다는, 즉흥적이고 활동적인 놀이에서 훨씬 빛을 발한다.'},
+  {n:13,axis:'D',text:'아이와 감정적으로 깊은 대화를 나누는 것보다, 등하원 버스 태우기 같은 정해진 스케줄을 칼같이 지키는 데서 강점이 나온다.'},
+  {n:14,axis:'F',text:'젖병 세척, 아기 장난감 소독 등 꼼꼼하고 위생이 중요한 육아 살림을 맡기면 완벽주의 성향을 보인다.'},
+  {n:15,axis:'R',text:'아이가 아플 때 감정적으로 불안해하기보다, 병원 예약, 약 먹이는 시간 등을 차분하고 이성적으로 체크한다.'},
+  {n:16,axis:'X',text:'아이와 몸으로 놀아주는 것보다, 집안 청소나 쓰레기 비우기 같은 가사로 육아를 서포트하는 방식이 자신에게 더 잘 맞는다고 한다.'},
+  {n:17,axis:'M',text:'아이가 갑자기 심하게 울거나 돌발 상황이 생겨도 당황하지 않고 "내가 알아서 해볼게"라며 끝까지 노력하려 한다.'},
+  {n:18,axis:'A',text:'육아용품 조립이나 새로운 육아 앱 사용 등 처음 접하는 일도 꺼리지 않고 일단 부딪쳐 본다.'},
+  {n:19,axis:'M',text:'엄마가 없는 주말에 아이와 단둘이 반나절 이상 시간을 보내는 것에 대해 부담감을 느끼지 않는다.'},
+  {n:20,axis:'F',text:'본인 나름대로 정성껏 해놓은 육아나 집안일에 대해, 있는 그대로 인정받고 싶어 하는 마음이 크다.'},
+  {n:21,axis:'F',text:'잘해보려고 시도한 일에 "그렇게 하는 거 아니야" 같은 피드백을 들으면, 의욕이 빠르게 꺾이는 섬세한 마음을 가지고 있다.'},
+  {n:22,axis:'F',text:'"어차피 내가 하면 욕먹으니까 그냥 당신이 시키는 것만 할게"라는 뉘앙스를 보인 적이 있다.'},
+  {n:23,axis:'F',text:'아이를 케어할 때 아내가 옆에서 지켜보면, 잘하고 있는지 신경 쓰여 평소보다 조심스러워진다고 한다.'},
+  {n:24,axis:'F',text:'완벽하게 해내지 못할 바에는 차라리 시작을 안 하거나 아내에게 양보하는 게 낫다고 생각하는 것 같다.'},
+  {n:25,axis:'M',text:'아빠의 행동이 아이의 정서 발달이나 미래에 얼마나 결정적인 역할을 하는지 명확한 이유를 알면 적극적으로 변한다.'},
+  {n:26,axis:'M',text:'남편의 노고를 진심으로 인정해 주는 "덕분에 아이가 정말 밝아졌어" 등의 말에 기뻐하거나 동기부여를 받는 편이다.'},
+  {n:27,axis:'M',text:'"아빠 최고!"라며 리액션을 크게 해주는 아이의 칭찬 스티커 같은 감사 표현에 활력을 얻는다.'},
+  {n:28,axis:'M',text:'가정 내에서 자신의 역할(예: 우리 집 안전 지킴이, 주말 메인 요리사 등)에 멋진 타이틀을 붙여주면 더 책임감을 갖는 것 같다.'},
+  {n:29,axis:'X',text:'직장에서 에너지를 많이 쓰고 온 날은, 집에서만큼은 아무것도 하지 않고 완전히 쉬고 싶어 한다.'},
+  {n:30,axis:'X',text:'주말이나 퇴근 후 일단 눕기부터 하려는 건 게을러서가 아닌, 그저 정말 휴식이 필요한 것 같다.'},
+  {n:31,axis:'X',text:'"엄마와의 애착이 아이 정서에 특히 중요하다"는 생각을 이유로, 스스로는 한 발 물러서 있으려는 경향이 있다.'},
+  {n:32,axis:'X',text:'주말, 본인만의 취미 생활이나 자유 시간이 차단되면 스트레스받아 한다.'},
+  {n:33,axis:'R',text:'아이와 함께 있는 시간 못지않게, 필요한 것을 챙겨주고 경제적으로 든든하게 뒷받침하는 것이 아빠의 중요한 역할이라고 믿는 편이다.'},
+  {n:34,axis:'R',text:'육아 관련 결정을 내릴 때, 감정보다 비용이나 효율을 먼저 꼼꼼히 따지는 합리적인 편이다.'},
+  {n:35,axis:'R',text:'아이와 시간을 보내는 대신, 학원이나 교육 투자로 마음을 표현하는 걸 더 편하게 여긴다.'},
+  {n:36,axis:'R',text:'돈을 벌어오는 것 자체가 육아에 기여하는 확실한 방법이라고 생각하는 눈치다.'},
+  {n:37,axis:'X',text:'퇴근 후에는 대화할 기운을 아껴두고 싶어 하고, 육아나 집안일 얘기가 나오면 먼저 숨부터 고르는 편이다.'},
+  {n:38,axis:'X',text:'주말에는 별다른 계획 없이 하루 종일 누워서 충전하는 시간을 가장 좋아한다.'},
+  {n:39,axis:'X',text:'육아에 대해 먼저 나서서 관심을 표현하는 일은 드문 편이다.'},
+  {n:40,axis:'P',text:'요리, 장보기, 냉장고 정리 같은 살림은 시키지 않아도 알아서 척척 해낸다.'},
+  {n:41,axis:'P',text:'청소나 정리정돈처럼 디테일한 살림까지 완벽하게 신경 쓰는 편이다.'},
+  {n:42,axis:'P',text:'집안일에 관해서는 물어보지 않아도 무엇이 필요한지 먼저 파악해서 해결한다.'},
+  {n:43,axis:'P',text:'아이와 눈을 맞추고 놀아주는 일보다, 집안일을 하는 게 훨씬 편하고 자신 있다.'},
+  {n:44,axis:'P',text:'아이가 감정적으로 힘들어할 때, 다정한 말보다는 방 청소나 간식 준비 같은 행동으로 마음을 표현하려 한다.'},
+  {n:45,axis:'P',text:'아이와 단둘이 놀아줘야 하는 상황이 오면, 슬쩍 다른 집안일을 챙기며 자리를 비키는 편이다.'}
+];
+const AXES = ['D','A','R','F','X','M','P'];
+const TYPES = {
+  D:{emoji:'🤖',name:'알파고 로봇형',sub:'코딩 필수형',color:'var(--d)',
+     tagline:'인풋이 완벽하면 아웃풋도 완벽한 스마트 AI 로봇',
+     desc:'알아서 하라고 하면 회로가 멈추지만,<br><br>"시간, 장소, 명확한 할 일"을 포스트잇에 코딩해주면 대기업 수석 연구원처럼 오차 없이 끝내는 스타일이에요.',
+     tip:'부탁은 "알아서 해줘"가 아니라 "6시까지, 여기서, 이거"처럼 시간·장소·할 일을 명확히 코딩해서 전달해주세요.<br><br>카톡 메모나 포스트잇이 최고의 인터페이스예요.<br><br>지시를 구체적으로 바꾸는 것만으로도 마찰이 확 줄어요.',
+     myth:'안 움직이는 게 무관심해서가 아니라,<br>인풋(지시)이 불완전해서 아웃풋이 안 나오는 것뿐이에요.'},
+  A:{emoji:'🏋️',name:'터미네이터형',sub:'파괴적 추진력',color:'var(--a)',
+     tagline:'추진력과 파워는 200%, 섬세함은 0%',
+     desc:'시키면 빼지 않고 냅다 덤벼들어 온몸으로 파괴적으로 놀아주지만,<br><br>지나간 자리에 기저귀 거꾸로 채우기, 거품 남은 설거지 같은 약간의 수습거리를 남기는 상남자 스타일이에요.',
+     tip:'"놀이 담당"을 통째로 맡기는 게 최고 효율이에요.<br><br>마무리(정리, 뒤처리)는 체크리스트나 다른 방식으로 보완해주세요.<br><br>실수를 지적하기보다 파워를 먼저 인정해주면 다음엔 더 적극적으로 움직여요.',
+     myth:'뒤처리가 서툰 게 성의가 없어서가 아니라,<br>애초에 섬세함이 강점인 유형이 아니에요.'},
+  R:{emoji:'💼',name:'대기업 주주형',sub:'자본주의형 가장',color:'var(--r)',
+     tagline:'지분 투자는 확실하게, 경영 간섭은 최소한으로',
+     desc:'밖에서 자원(돈벌이)을 획득해오는 것이 최고의 헌신이라 믿어요.<br><br>감정적 대화는 뚝딱거려도, 굵직한 비용 결제나 자본 투입은 우직하게 책임지는 메인 투자자 스타일이에요.',
+     tip:'"돈이 아니라 시간과 마음이 아이에게 더 필요하다"는 걸 감정 호소보다 논리와 근거로 설명하는 게 먹혀요.<br><br>굵직한 결정(육아용품 구매, 큰 지출)은 믿고 맡기고, 정서적 참여가 필요한 영역을 구체적으로 짚어주세요.',
+     myth:'무관심한 게 아니라,<br>"아빠의 역할"에 대한 정의 자체가 다른 거예요.'},
+  F:{emoji:'🩹',name:'유리방패 가디언형',sub:'신중한 완벽주의',color:'var(--f)',
+     tagline:'방어력은 만렙인데, 타격받으면 와장창 깨지는 유리 멘탈',
+     desc:'가족을 지키려는 책임감은 강하지만, 아내의 한숨이나 "그렇게 하지 마"라는 지적 한마디에 내면이 와장창 깨져요.<br><br>혼날까 봐 무서워서 유리방패 뒤로 숨어 조심스럽게 상황을 관망하는 캐릭터예요.',
+     tip:'결과물이 마음에 안 들어도 일단 인정부터 하고, 수정은 나중에 따로 해주세요.<br><br>"덕분에 편했어" 한마디가 큰 동기부여가 돼요.<br><br>처음부터 완벽을 기대하지 말고, 지켜보지 않고 맡겨두는 연습이 필요해요.',
+     myth:'포기가 빨라 보여도 무책임한 게 아니라,<br>상처를 빨리 받는 성향이에요.'},
+  X:{emoji:'🔋',name:'배터리 방전 로그아웃형',sub:'생존형 좀비',color:'var(--x)',
+     tagline:'악의는 없어요. 단지 배터리가 0%일 뿐이에요.',
+     desc:'회사에서 영혼까지 털려 대뇌 피질이 셧다운된 상태예요.<br><br>퇴근 후나 주말에 소파·안방으로 자석처럼 끌려가 릴스를 보며 영혼을 "로그아웃" 시켜요.',
+     tip:'몰아붙이기보다 "본인이 회복할 시간"을 먼저 확보해준 뒤 역할을 나누면 훨씬 잘 움직여요.<br><br>처음부터 큰 걸 요구하지 말고, 부담 없는 작은 미션부터 시작해주세요.',
+     myth:'의욕이 없어 보여도 실제로는 진짜 방전 상태인 경우가 많아요.<br><br>다그친다고 나아지지 않아요.'},
+  M:{emoji:'🌱',name:'예비 MVP 우량주',sub:'명분형 리더',color:'var(--m)',
+     tagline:'명분과 타이틀만 주면 언제든 떡상할 준비가 된 대장',
+     desc:'단순 심부름이나 영혼 없는 노동은 거부하지만,<br><br>이 행동이 가정을 위해 얼마나 가치 있는지 "명분"이 서고 "전담 프로젝트 대장" 같은 타이틀을 쥐여주면 주도적으로 가정을 경영할 준비가 된 리더예요.',
+     tip:'"기저귀 좀 버려줘" 대신 "우리 아이 정서 발달 프로젝트 총괄"처럼 이유와 타이틀을 함께 주세요.<br><br>왜 이 일이 가족에게 중요한지 설명해주면 스스로 기획하고 주도하기 시작해요.',
+     myth:'명분을 따지는 게 까다로워서가 아니라,<br>원래 리더십이 강한 유형이라 "왜"가 있어야 움직이는 거예요.'},
+  P:{emoji:'🧹',name:'살림 마스터형 아빠',sub:'완벽한 집사',color:'var(--p)',
+     tagline:'집안은 호텔급, 다만 아이 눈높이는 아직 낯설어요',
+     desc:'요리, 청소, 정리정돈, 장보기까지 —<br><br>시키지 않아도 알아서 완벽하게 해내는 타고난 살림꾼이에요. 다만 아이와 눈높이를 맞춰 놀아주거나 감정을 나누는 순간에는 살짝 뻘쭘해하며 한 발 물러서는 편이에요.',
+     tip:'살림에 대한 고마움을 먼저 표현해서 자신감을 채워준 다음, "오늘은 청소 대신 20분만 놀아줘"처럼 놀이도 하나의 살림 미션으로 구체적으로 제안해보세요.<br><br>정서적 교감도 "잘 해낼 수 있는 일"이라는 확신이 생기면 훨씬 편하게 다가가요.',
+     myth:'아이한테 관심이 없어서가 아니라,<br>몸을 쓰는 살림과 달리 감정을 다루는 일이 아직 낯설고 서툰 것뿐이에요.'}
+};
+const HYBRIDS = {
+  'D-A':{emoji:'🦾',name:'양날의 검, 아이언맨형',
+    tagline:'지침이 있으면 잘하는 로봇형과 의욕이 앞서는 터미네이터형이 섞인 상태',
+    desc:'"내가 다 박살 내버리겠어!" 하고 주도적으로 뛰어드는데,<br><br>자기 고집대로 하다가 사고를 치고는 "그럼 어떻게 하라고? 적어주든가!" 하고 삐지는 스타일이에요.',
+    tip:'덤벼들 때 제지하지 말고 일단 기를 살려주되,<br><br>"여보의 파워풀한 추진력에 내 디테일 한 스푼만 얹자"라며 핵심 포인트 1개만 가이드라인으로 코딩해주면 최고 효율이에요.',
+    myth:'고집도 실수도, 의욕이 없어서가 아니라<br>파워와 지침이 동시에 필요한 유형이라 그래요.'},
+  'F-X':{emoji:'🧟',name:'멘탈 가출, 은둔형 좀비',
+    tagline:'지적에 상처받은 유리방패형과 직장 스트레스로 번아웃된 배터리 방전형이 결합한 슬럼프 상태',
+    desc:'손을 대면 혼날까 봐 무섭고,<br><br>몸은 이미 방전되어 안방이나 차 안에서 영혼을 완전히 로그아웃한 채 나오지 않아요.',
+    tip:'"애랑 놀아라", "돈 벌면 다냐" 같은 압박은 독약이에요.<br><br>"완전한 비난 제로 존"을 선언하고 주 1시간 완벽한 자유를 공식 보상으로 준 뒤, 가장 쉬운 미션(예: 쓰레기통 비우기)부터 성공 경험을 쌓게 해주세요.',
+    myth:'무기력해 보여도,<br>상처와 방전이 겹쳐서 나오지 못하는 것뿐이에요.'},
+  'R-M':{emoji:'📊',name:'명분 추구, 기획조정실장형',
+    tagline:'자본 투입에 확실한 주주형과 명분이 중요한 MVP형이 만난 조합',
+    desc:'"내가 밖에서 돈 벌어다 주잖아"라며 지분만 챙기려다가도,<br><br>확실한 데이터와 교육적 명분을 제시하면 갑자기 가문의 미래를 걱정하기 시작해요.',
+    tip:'단순 잔심부름은 자존심 상해해요.<br><br>"주말 레저 및 신체 발달 프로젝트 총괄 디렉터" 같은 거창한 타이틀과 권한을 통째로 넘기면 스스로 예산 짜고 기획하는 에이스로 전환돼요.',
+    myth:'까다로운 게 아니라,<br>명분과 숫자로 설득되어야 움직이는 리더 기질이라 그래요.'}
+};
+const ICON_PATHS = {
+  D:`<rect x="6" y="9" width="12" height="10" rx="2"/><line x1="12" y1="9" x2="12" y2="5"/><circle cx="12" cy="3.4" r="1.3"/><circle cx="9.5" cy="13.5" r="1"/><circle cx="14.5" cy="13.5" r="1"/><line x1="9" y1="17" x2="15" y2="17"/><line x1="2.5" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="21.5" y2="12"/>`,
+  A:`<rect x="2" y="10" width="3" height="4" rx="1"/><rect x="19" y="10" width="3" height="4" rx="1"/><line x1="7" y1="12" x2="17" y2="12"/><rect x="5" y="8" width="2" height="8" rx="1"/><rect x="17" y="8" width="2" height="8" rx="1"/>`,
+  R:`<rect x="3" y="8" width="18" height="12" rx="2"/><path d="M8 8V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="3" y1="13" x2="21" y2="13"/>`,
+  F:`<path d="M12 3l7 3v6c0 5-3.5 7.5-7 9-3.5-1.5-7-4-7-9V6l7-3z"/><path d="M12 8l-1.6 4 2 1-1.6 4"/>`,
+  X:`<rect x="2" y="8" width="17" height="8" rx="2"/><rect x="20" y="10.5" width="2" height="3" rx="0.5" fill="currentColor" stroke="none"/><rect x="4.5" y="10.5" width="3" height="3" rx="0.5" fill="currentColor" stroke="none"/>`,
+  M:`<path d="M12 21V11"/><path d="M12 11C12 7 9 5 5 5c0 4 3 7 7 6z"/><path d="M12 13c0-4 3-6 7-6c0 4-3 7-7 6z"/>`,
+  P:`<rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1"/><path d="M8.5 13l2 2 4-4"/>`
+};
+function typeIcon(a, size){
+  size = size || 22;
+  return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">${ICON_PATHS[a]}</svg>`;
+}
+const CHALLENGE_URL = 'https://forms.gle/MULdtTGJv94tQrnr7';
+const GAS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbz-ZLu-Ud-14ceq-zdtkECwXIQevFZ7fqSGOIINwZNk1q5DrEpaf3GX45YsFxQVx9kW/exec';
+/* ============ STATE ============ */
+const state = {
+  screen:'intro',
+  name:'',
+  qIndex:0,
+  answers:new Array(QUESTIONS.length).fill(0),
+  email:'',
+  phone:'',
+  agreeRequired:false,
+  agreeMarketing:false,
+  resultKey:null,
+  scores:null,
+  aggPercent:null,
+  aggTotal:null
+};
+/* ============ SCORING ============ */
+function computeScores(){
+  const sums = {D:0,A:0,R:0,F:0,X:0,M:0,P:0};
+  const counts = {D:0,A:0,R:0,F:0,X:0,M:0,P:0};
+  QUESTIONS.forEach((q,i)=>{
+    sums[q.axis]+= state.answers[i];
+    counts[q.axis]+=1;
+  });
+  const pct = {};
+  AXES.forEach(a=>{ pct[a] = Math.round((sums[a] / (counts[a]*5)) * 1000)/10; });
+  return pct;
+}
+function determineResult(pct){
+  const sorted = AXES.slice().sort((a,b)=>pct[b]-pct[a]);
+  const top1 = sorted[0], top2 = sorted[1];
+  const gap = pct[top1]-pct[top2];
+  const pairKeyA = top1+'-'+top2, pairKeyB = top2+'-'+top1;
+  const hybridKey = HYBRIDS[pairKeyA] ? pairKeyA : (HYBRIDS[pairKeyB] ? pairKeyB : null);
+  if(hybridKey && gap<=12){ return {type:'hybrid', key:hybridKey}; }
+  return {type:'single', key:top1};
+}
+/* ============ STORAGE (aggregate stats + lead) ============ */
+async function saveResultAndGetStats(result){
+  const resultTypeCode = result.key;
+  const resultName = result.type==='hybrid' ? HYBRIDS[result.key].name : TYPES[result.key].name;
+  const useGas = GAS_WEB_APP_URL && !GAS_WEB_APP_URL.includes('PASTE_YOUR_URL_HERE');
+  if(useGas){
+    try{
+      // fire-and-forget save to the Google Sheet (no-cors: response body isn't readable, that's fine)
+      await fetch(GAS_WEB_APP_URL, {
+        method:'POST',
+        mode:'no-cors',
+        headers:{ 'Content-Type':'text/plain' },
+        body: JSON.stringify({
+          name:state.name, email:state.email, phone:state.phone,
+          resultType:resultTypeCode, resultName, marketingConsent: state.agreeMarketing,
+          scores: state.scores, answers: state.answers
+        })
+      });
+      // read back aggregate counts for the "OOO명 중 OO%" stat line
+      const res = await fetch(GAS_WEB_APP_URL, { method:'GET' });
+      const data = await res.json();
+      const total = data.total || 1;
+      const mine = (data.counts && data.counts[resultTypeCode]) || 1;
+      return { total, percent: Math.round((mine/total)*100) };
+    }catch(err){
+      // network/CORS hiccup — fall through to local fallback below
+    }
+  }
+  // fallback: local shared storage (used if GAS URL isn't set or the call failed)
+  let totals = {};
+  try{
+    const res = await window.storage.get('type_counts', true);
+    if(res && res.value) totals = JSON.parse(res.value);
+  }catch(e){ totals = {}; }
+  totals[resultTypeCode] = (totals[resultTypeCode]||0) + 1;
+  try{ await window.storage.set('type_counts', JSON.stringify(totals), true); }catch(e){}
+  try{
+    const id = 'lead:' + Date.now() + '-' + Math.random().toString(36).slice(2,8);
+    await window.storage.set(id, JSON.stringify({
+      name:state.name, email:state.email, phone:state.phone,
+      resultKey:resultTypeCode, marketingConsent: state.agreeMarketing,
+      scores: state.scores, answers: state.answers, ts:new Date().toISOString()
+    }), true);
+  }catch(e){}
+  const grand = Object.values(totals).reduce((a,b)=>a+b,0);
+  const mine = totals[resultTypeCode]||1;
+  return { total:grand, percent: Math.round((mine/grand)*100) };
+}
+/* ============ RADAR SVG ============ */
+function radarSVG(pct, size, opts){
+  opts = opts||{};
+  const cx=size/2, cy=size/2, maxR=size*0.36;
+  const order = AXES;
+  const pt = (i,r)=>{
+    const ang = (-90 + i*(360/order.length)) * Math.PI/180;
+    return [cx + r*Math.cos(ang), cy + r*Math.sin(ang)];
+  };
+  const rings = [0.25,0.5,0.75,1].map(f=>{
+    const pts = order.map((_,i)=>pt(i,maxR*f).join(',')).join(' ');
+    return `<polygon points="${pts}" fill="none" stroke="rgba(29,49,37,0.12)" stroke-width="1"/>`;
+  }).join('');
+  const axisLines = order.map((_,i)=>{
+    const [x,y]=pt(i,maxR);
+    return `<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="rgba(29,49,37,0.12)" stroke-width="1"/>`;
+  }).join('');
+  const dataPts = order.map((a,i)=> pt(i, maxR*(pct[a]/100)) ).map(p=>p.join(',')).join(' ');
+  const labels = order.map((a,i)=>{
+    const [x,y]=pt(i,maxR+ (opts.labelSize||16));
+    return `<text x="${x}" y="${y}" text-anchor="middle" dominant-baseline="middle" font-size="${opts.fontSize||11}" font-weight="700" fill="${TYPES[a].color.replace('var(--','').replace(')','') ? TYPES[a].color : '#1D3125'}">${a}</text>`;
+  }).join('');
+  return `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" style="overflow:visible">
+    ${rings}${axisLines}
+    <polygon points="${dataPts}" fill="rgba(165,181,161,0.38)" stroke="var(--accent)" stroke-width="2"/>
+    ${labels}
+  </svg>`;
+}
+/* ============ RENDER ============ */
+const app = document.getElementById('app');
+function render(){
+  if(state.screen==='intro') return renderIntro();
+  if(state.screen==='quiz') return renderQuiz();
+  if(state.screen==='gate') return renderGate();
+  if(state.screen==='result') return renderResult();
+}
+function renderIntro(){
+  app.innerHTML = `
+    <div class="topbar"><span class="badge-dot"></span><span>H-BTI · 남편 육아 기질 테스트</span></div>
+    <main>
+      <div class="intro-hero">
+        <span class="eyebrow">45문항 · 약 6분</span>
+        <h1 class="display">우리 남편,<br>육아 캐릭터 알아보기</h1>
+        <p>가장 가까이서 지켜본 사람만 알 수 있어요.<br>잔소리, 감정 소모없는 공정육아를 위해<br>우리 남편 육아 기질 먼저 알아보세요.</p>
+        <div class="type-strip">
+          ${AXES.map(a=>`<div class="type-chip" style="border-color:${TYPES[a].color}; color:${TYPES[a].color}">${typeIcon(a,20)}</div>`).join('')}
+        </div>
+      </div>
+      <div class="field">
+        <label for="nameInput">참여자 성함</label>
+        <input id="nameInput" placeholder="예: 김현지" value="${state.name}" autocomplete="name">
+      </div>
+      <button class="btn btn-primary btn-block" id="startBtn">테스트 시작하기 →</button>
+      <p class="hint">응답 내용은 결과 분석 및 통계 집계 목적으로만 사용돼요.</p>
+    </main>
+    <footer>ⓒ 엄마응답 · H-BTI (Husband-Behavior Type Indicator)</footer>
+  `;
+  const input = document.getElementById('nameInput');
+  input.addEventListener('input', e=> state.name = e.target.value);
+  document.getElementById('startBtn').addEventListener('click', ()=>{
+    if(!state.name.trim()){ input.focus(); input.style.borderColor = 'var(--a)'; return; }
+    state.screen='quiz'; state.qIndex=0; render();
+  });
+}
+function renderQuiz(){
+  const q = QUESTIONS[state.qIndex];
+  const pct = computeScores();
+  app.innerHTML = `
+    <div class="topbar"><span class="badge-dot"></span><span>${state.name}님의 진단 중</span></div>
+    <main>
+      <div class="progress-wrap">
+        <div class="progress-row">
+          <span class="q-count">진행률</span>
+          <span class="q-count"><b>${state.qIndex+1}</b> / ${QUESTIONS.length}</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" style="width:${((state.qIndex)/QUESTIONS.length)*100}%"></div></div>
+      </div>
+      <div class="radar-mini">${radarSVG(pct, 150, {fontSize:9,labelSize:12})}</div>
+      <div class="q-card"><p>${q.text}</p></div>
+      <div class="scale">
+        <div class="scale-labels"><span>전혀 아니다</span><span>매우 그렇다</span></div>
+        <div class="scale-btns">
+          ${[1,2,3,4,5].map(v=>`<button class="scale-btn${state.answers[state.qIndex]===v?' selected':''}" data-v="${v}">${v}</button>`).join('')}
+        </div>
+      </div>
+      <div class="quiz-nav">
+        <button class="link-btn" id="backBtn" ${state.qIndex===0?'style="visibility:hidden"':''}>← 이전 문항</button>
+        <button class="link-btn" id="skipFwdBtn" ${state.answers[state.qIndex]===0?'style="visibility:hidden"':''}>다음 문항 →</button>
+      </div>
+    </main>
+  `;
+  document.querySelectorAll('.scale-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      state.answers[state.qIndex] = parseInt(btn.dataset.v,10);
+      if(state.qIndex < QUESTIONS.length-1){ state.qIndex++; render(); }
+      else { state.screen='gate'; render(); }
+    });
+  });
+  const back = document.getElementById('backBtn');
+  if(back) back.addEventListener('click', ()=>{ if(state.qIndex>0){ state.qIndex--; render(); } });
+  const skipFwd = document.getElementById('skipFwdBtn');
+  if(skipFwd) skipFwd.addEventListener('click', ()=>{
+    if(state.qIndex < QUESTIONS.length-1){ state.qIndex++; render(); }
+    else { state.screen='gate'; render(); }
+  });
+}
+function renderGate(){
+  app.innerHTML = `
+    <div class="topbar"><span class="badge-dot"></span><span>마지막 단계</span></div>
+    <main>
+      <div class="intro-hero" style="padding-top:8px">
+        <span class="eyebrow">45문항 완료 🎉</span>
+        <h1 class="display" style="font-size:26px">결과를 받아볼<br>정보를 남겨주세요</h1>
+      </div>
+      <div class="gate-card">
+        <h2>${state.name}님, 거의 다 왔어요</h2>
+        <p>결과지를 이메일로 보내드리고, 문자로 한 번 더 알려드릴게요.</p>
+        <div class="trust-row"><span class="trust-icon">🔒</span><span>입력하신 정보는 결과 발송 목적으로만 사용되고 안전하게 보호돼요.</span></div>
+        <div class="field">
+          <label for="emailInput">이메일</label>
+          <input id="emailInput" type="email" placeholder="example@email.com" value="${state.email}">
+        </div>
+        <div class="field">
+          <label for="phoneInput">연락처</label>
+          <input id="phoneInput" type="tel" placeholder="010-0000-0000" value="${state.phone}">
+        </div>
+        <div class="checkline required">
+          <input type="checkbox" id="agreeRequiredCheck" ${state.agreeRequired?'checked':''}>
+          <label for="agreeRequiredCheck"><span class="req-tag">[필수]</span>개인정보 수집·이용에 동의합니다. (수집 항목: 이름, 이메일, 연락처 / 목적: 결과지 발송, 유형 통계 집계 / 보유기간: 결과 발송 및 문의 응대 완료 후 파기)</label>
+        </div>
+        <div class="checkline optional">
+          <input type="checkbox" id="agreeMarketingCheck" ${state.agreeMarketing?'checked':''}>
+          <label for="agreeMarketingCheck"><span class="opt-tag">[선택]</span>가족경영챌린지 등 관련 소식·혜택 안내(마케팅) 수신에 동의합니다. 동의하지 않아도 결과 확인에는 영향이 없어요.</label>
+        </div>
+        <button type="button" class="policy-toggle" id="policyToggle">개인정보처리방침 자세히 보기</button>
+        <div class="policy-box" id="policyBox">
+          <table>
+            <tr><td>수집 항목</td><td>이름, 이메일, 연락처, 테스트 응답 및 결과 유형</td></tr>
+            <tr><td>수집 목적</td><td>결과지 발송, 참여자 통계(유형별 비율) 집계, 동의 시 챌린지 등 관련 소식 안내</td></tr>
+            <tr><td>보유 기간</td><td>목적 달성(결과 발송·문의 응대) 후 지체 없이 파기하며, 마케팅 수신에 동의한 경우 동의 철회 시까지 보유</td></tr>
+            <tr><td>동의 거부</td><td>필수 항목 동의를 거부할 권리가 있으며, 이 경우 결과 확인이 제한될 수 있어요. 선택 항목(마케팅) 미동의는 결과 확인에 영향이 없어요.</td></tr>
+            <tr><td>철회 방법</td><td>결과 안내 메일/문자로 회신 주시면 즉시 삭제·수신 거부 처리해드려요.</td></tr>
+          </table>
+        </div>
+      </div>
+      <button class="btn btn-primary btn-block" id="submitBtn" disabled>내 캐릭터 결과 보기 →</button>
+      <div class="retry-row">
+        <button class="link-btn" id="backToQuizBtn">← 답변 다시 확인하기</button>
+      </div>
+    </main>
+  `;
+  const backToQuizBtn = document.getElementById('backToQuizBtn');
+  backToQuizBtn.addEventListener('click', ()=>{
+    state.qIndex = QUESTIONS.length-1; state.screen='quiz'; render();
+  });
+  const emailInput = document.getElementById('emailInput');
+  const phoneInput = document.getElementById('phoneInput');
+  const agreeRequiredCheck = document.getElementById('agreeRequiredCheck');
+  const agreeMarketingCheck = document.getElementById('agreeMarketingCheck');
+  const policyToggle = document.getElementById('policyToggle');
+  const policyBox = document.getElementById('policyBox');
+  const submitBtn = document.getElementById('submitBtn');
+  function validate(){
+    const ok = emailInput.value.includes('@') && phoneInput.value.trim().length>=9 && agreeRequiredCheck.checked;
+    submitBtn.disabled = !ok;
+  }
+  emailInput.addEventListener('input', e=>{ state.email=e.target.value; validate(); });
+  phoneInput.addEventListener('input', e=>{ state.phone=e.target.value; validate(); });
+  agreeRequiredCheck.addEventListener('change', e=>{ state.agreeRequired=e.target.checked; validate(); });
+  agreeMarketingCheck.addEventListener('change', e=>{ state.agreeMarketing=e.target.checked; });
+  policyToggle.addEventListener('click', ()=> policyBox.classList.toggle('open'));
+  validate();
+  submitBtn.addEventListener('click', async ()=>{
+    submitBtn.disabled = true;
+    submitBtn.textContent = '결과 계산 중...';
+    const pct = computeScores();
+    const result = determineResult(pct);
+    state.scores = pct;
+    state.resultKey = result;
+    const stats = await saveResultAndGetStats(result);
+    state.aggPercent = stats.percent;
+    state.aggTotal = stats.total;
+    state.screen='result';
+    render();
+  });
+}
+function renderResult(){
+  const pct = state.scores;
+  const r = state.resultKey;
+  const data = r.type==='hybrid' ? HYBRIDS[r.key] : TYPES[r.key];
+  const subLabel = r.type==='hybrid' ? '하이브리드 유형' : (TYPES[r.key].sub);
+  const heroIcon = r.type==='single'
+    ? `<span class="result-emoji" style="color:${TYPES[r.key].color}">${typeIcon(r.key,54)}</span>`
+    : `<span class="result-emoji">${data.emoji}</span>`;
+  app.innerHTML = `
+    <div class="topbar"><span class="badge-dot"></span><span>${state.name}님의 결과</span>
+      <button class="share-btn" id="shareBtn">🔗 친구야 너도 해봐 ㅋㅋ</button>
+    </div>
+    <main>
+      <div class="result-hero">
+        ${heroIcon}
+        <div class="result-eyebrow">${subLabel}</div>
+        <h1 class="result-name display">${data.name}</h1>
+        <p class="result-tagline">${data.tagline}</p>
+      </div>
+      <div class="radar-big">${radarSVG(pct, 260, {fontSize:13,labelSize:20})}</div>
+      <div class="section-card">
+        <div class="label" style="color:var(--accent)">현실 모습</div>
+        <p>${data.desc}</p>
+      </div>
+      <div class="section-card">
+        <div class="label" style="color:var(--m)">✅ 이렇게 하면 통해요</div>
+        <p>${data.tip}</p>
+      </div>
+      <div class="section-card">
+        <div class="label" style="color:var(--text-dim)">💬 흔한 오해</div>
+        <p>${data.myth}</p>
+      </div>
+      <div class="stat-line">
+        <div class="num">${state.aggPercent}%</div>
+        <div class="txt">지금까지 참여한 ${state.aggTotal}명 중 <b>${state.aggPercent}%</b>가 ${state.name}님의 남편과 같은 유형이었어요.</div>
+      </div>
+      <div class="cta-block">
+        <span class="cta-chip">🌱 가족경영챌린지 1단계</span>
+        <h3 class="display" style="font-size:20px">이제, 잘 나누기만 하면 돼요</h3>
+        <p>성향을 알았다면 다음은 실행이에요.<br>독박육아도, 무리한 반반도 아닌,<br>각자의 강점으로 영역을 나누는 "공정육아"<br>수다온과 함께 4주간의 챌린지를 통해 만들어 보세요.</p>
+        <a href="${CHALLENGE_URL}" target="_blank" rel="noopener" class="btn btn-primary" style="text-decoration:none">가족경영챌린지 1단계 신청하기 →</a>
+      </div>
+      <div class="retry-row">
+        <button class="link-btn" id="retryBtn">처음부터 다시 하기</button>
+      </div>
+    </main>
+    <footer>ⓒ 엄마응답 · H-BTI (Husband-Behavior Type Indicator)</footer>
+  `;
+  const shareBtn = document.getElementById('shareBtn');
+  shareBtn.addEventListener('click', async ()=>{
+    const url = window.location.href;
+    try{
+      if(navigator.clipboard && navigator.clipboard.writeText){
+        await navigator.clipboard.writeText(url);
+      }else{
+        const ta = document.createElement('textarea');
+        ta.value = url; ta.style.position='fixed'; ta.style.opacity='0';
+        document.body.appendChild(ta); ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+      }
+      const original = shareBtn.textContent;
+      shareBtn.textContent = '✅ 링크 복사 완료!';
+      setTimeout(()=>{ shareBtn.textContent = original; }, 1800);
+    }catch(err){
+      shareBtn.textContent = '복사 실패 ㅠ 직접 URL을 복사해주세요';
+    }
+  });
+  document.getElementById('retryBtn').addEventListener('click', ()=>{
+    state.screen='intro'; state.qIndex=0; state.answers=new Array(QUESTIONS.length).fill(0);
+    state.email=''; state.phone=''; state.agreeRequired=false; state.agreeMarketing=false; state.resultKey=null; state.scores=null;
+    render();
+  });
+}
+render();
+</script>
+</body>
+</html>
