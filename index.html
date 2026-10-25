@@ -406,7 +406,7 @@ function typeIcon(a, size){
   size = size || 22;
   return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">${ICON_PATHS[a]}</svg>`;
 }
-const CHALLENGE_URL = 'https://forms.gle/MULdtTGJv94tQrnr7';
+const CHALLENGE_URL = 'https://open.kakao.com/o/gM5O0ITi';
 const GAS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbw-GYzT62n5pm4lp6rKoKKtmS7ZKJn9Q4PLJcC8Cmm3uXNScev2r3i2hZFhJy4TPwro/exec';
 /* ============ STATE ============ */
 const state = {
@@ -608,8 +608,8 @@ function renderGate(){
       </div>
       <div class="gate-card">
         <h2>${state.name}님, 거의 다 왔어요</h2>
-        <p>결과지를 이메일로 보내드리고, 문자로 한 번 더 알려드릴게요.</p>
-        <div class="trust-row"><span class="trust-icon">🔒</span><span>입력하신 정보는 결과 발송 목적으로만 사용되고 안전하게 보호돼요.</span></div>
+        <p>결과는 바로 확인돼요. 남겨주신 정보는 아빠육아 프로젝트 이벤트 및 관련 무료자료 배포에 사용돼요.</p>
+        <div class="trust-row"><span class="trust-icon">🔒</span><span>입력하신 정보는 아빠육아 프로젝트 이벤트·무료자료 배포 목적으로만 사용되고 안전하게 보호돼요.</span></div>
         <div class="field">
           <label for="emailInput">이메일</label>
           <input id="emailInput" type="email" placeholder="example@email.com" value="${state.email}">
@@ -620,20 +620,20 @@ function renderGate(){
         </div>
         <div class="checkline required">
           <input type="checkbox" id="agreeRequiredCheck" ${state.agreeRequired?'checked':''}>
-          <label for="agreeRequiredCheck"><span class="req-tag">[필수]</span>개인정보 수집·이용에 동의합니다. (수집 항목: 이름, 이메일, 연락처 / 목적: 결과지 발송, 유형 통계 집계 / 보유기간: 결과 발송 및 문의 응대 완료 후 파기)</label>
+          <label for="agreeRequiredCheck"><span class="req-tag">[필수]</span>개인정보 수집·이용에 동의합니다. (수집 항목: 이름, 이메일, 연락처 / 목적: 아빠육아 프로젝트 이벤트 및 관련 무료자료 배포, 유형 통계 집계 / 보유기간: 이벤트·자료 배포 및 문의 응대 완료 후 파기)</label>
         </div>
         <div class="checkline optional">
           <input type="checkbox" id="agreeMarketingCheck" ${state.agreeMarketing?'checked':''}>
-          <label for="agreeMarketingCheck"><span class="opt-tag">[선택]</span>가족경영챌린지 등 관련 소식·혜택 안내(마케팅) 수신에 동의합니다. 동의하지 않아도 결과 확인에는 영향이 없어요.</label>
+          <label for="agreeMarketingCheck"><span class="opt-tag">[선택]</span>아빠육아 프로젝트 관련 소식·혜택 안내(마케팅) 수신에 동의합니다. 동의하지 않아도 결과 확인에는 영향이 없어요.</label>
         </div>
         <button type="button" class="policy-toggle" id="policyToggle">개인정보처리방침 자세히 보기</button>
         <div class="policy-box" id="policyBox">
           <table>
             <tr><td>수집 항목</td><td>이름, 이메일, 연락처, 테스트 응답 및 결과 유형</td></tr>
-            <tr><td>수집 목적</td><td>결과지 발송, 참여자 통계(유형별 비율) 집계, 동의 시 챌린지 등 관련 소식 안내</td></tr>
-            <tr><td>보유 기간</td><td>목적 달성(결과 발송·문의 응대) 후 지체 없이 파기하며, 마케팅 수신에 동의한 경우 동의 철회 시까지 보유</td></tr>
+            <tr><td>수집 목적</td><td>아빠육아 프로젝트 이벤트 및 관련 무료자료 배포, 참여자 통계(유형별 비율) 집계, 동의 시 관련 소식 안내</td></tr>
+            <tr><td>보유 기간</td><td>목적 달성(이벤트·자료 배포, 문의 응대) 후 지체 없이 파기하며, 마케팅 수신에 동의한 경우 동의 철회 시까지 보유</td></tr>
             <tr><td>동의 거부</td><td>필수 항목 동의를 거부할 권리가 있으며, 이 경우 결과 확인이 제한될 수 있어요. 선택 항목(마케팅) 미동의는 결과 확인에 영향이 없어요.</td></tr>
-            <tr><td>철회 방법</td><td>결과 안내 메일/문자로 회신 주시면 즉시 삭제·수신 거부 처리해드려요.</td></tr>
+            <tr><td>철회 방법</td><td>안내 메일/문자로 회신 주시면 즉시 삭제·수신 거부 처리해드려요.</td></tr>
           </table>
         </div>
       </div>
@@ -715,10 +715,10 @@ function renderResult(){
         <div class="txt">지금까지 참여한 ${state.aggTotal}명 중 <b>${state.aggPercent}%</b>가 ${state.name}님의 남편과 같은 유형이었어요.</div>
       </div>
       <div class="cta-block">
-        <span class="cta-chip">🌱 가족경영챌린지 1단계</span>
+        <span class="cta-chip">💬 아빠육아 프로젝트 단톡방</span>
         <h3 class="display" style="font-size:20px">이제, 잘 나누기만 하면 돼요</h3>
-        <p>성향을 알았다면 다음은 실행이에요.<br>독박육아도, 무리한 반반도 아닌,<br>각자의 강점으로 영역을 나누는 "공정육아"<br>수다온과 함께 4주간의 챌린지를 통해 만들어 보세요.</p>
-        <a href="${CHALLENGE_URL}" target="_blank" rel="noopener" class="btn btn-primary" style="text-decoration:none">가족경영챌린지 1단계 신청하기 →</a>
+        <p>성향을 알았다면 다음은 실행이에요.<br>독박육아도, 무리한 반반도 아닌,<br>각자의 강점으로 영역을 나누는 "공정육아"<br>아빠육아 프로젝트 단톡방에서 함께 만들어 보세요.</p>
+        <a href="${CHALLENGE_URL}" target="_blank" rel="noopener" class="btn btn-primary" style="text-decoration:none">아빠육아 프로젝트 단톡방 입장하기 →</a>
       </div>
       <div class="retry-row">
         <button class="link-btn" id="retryBtn">처음부터 다시 하기</button>
